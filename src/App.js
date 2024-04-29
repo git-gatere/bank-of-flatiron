@@ -13,9 +13,9 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('');
 
   return (
-    <div className="container"> {/* Container to span the whole width of the page */}
+    <div className="container">
       <h1 className="App">The Royal Bank of Flatiron</h1>
-      <SearchBar value={searchTerm} onChange={(value) => setSearchTerm(value)} /> {/* Pass onChange prop */}
+      <SearchBar value={searchTerm} onChange={(value) => setSearchTerm(value)} />
       <Form addTransaction={addTransaction} />
       
     </div>
