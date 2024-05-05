@@ -1,42 +1,58 @@
-import React, { useState } from "react"
-
+import React, { useState, useRef } from "react"
+import './form.css'
 import Table from "./Info";
-function Form(){
-const handleSubmit=(e)=>{
+import SearchBar from './Searchbar'
+function Form() {
+  const input = useRef({form: {}})
+  
+  const formRef = useRef()
+  const [data, setData] = useState([])
+  const [query, setQuery] = useState('')
+
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const newTransaction={
-      date,
-        description,
-        category,
-        amount
+    const clone = structuredClone(input.current.form)
+    setData(prev => {
+      return [ ...prev, clone ];
+  });
+    formRef.current.reset()
     };
-    setTransactions([...transactions,newTransaction]);
-    setDate('');
-    setDescription('');
-    setCategory('');
-    setAmount('');
-  }
-  const [transactions,setTransactions]=useState([]);
-    const [date,setDate]=useState('');
-    const [description,setDescription]=useState('');
-    const [category,setCategory]=useState('');
-    const [amount,setAmount]=useState('');
-    return(
-        <div>
-            <form onSubmit={handleSubmit}>
-    <label>Date</label>
-    <input type="date" placeholder='Date'value={date} onChange={(e)=>setDate(e.target.value)}/>
-    <label></label>
-    <input type="text" placeholder='Description' value={description} onChange={(e)=>setDescription(e.target.value)}/>
-  <label></label>
-  <input type="text" placeholder='Category'value={category} onChange={(e)=>setCategory(e.target.value)} />
-  <label ></label>
-  <input type="number" placeholder='amount' value={amount} onChange={(e)=>setAmount(e.target.value)}/>
-  <button type="submit" class="button">Add Transaction</button>
-  </form>
-  <div>
-  <Table transactions={transactions}/>
-  </div>
-  </div>
-    );}
-  export default Form;
+    
+    function handleChange(e) {
+      input.current.form[e.target.name] = e.target.value
+    }
+
+    function getSearchTerm(e) {
+      setQuery(e.target.value)
+     
+    }
+
+    const searchedItems = data.filter((item) => {
+      return item.description.toLowerCase().includes(query.toLowerCase())
+    })
+
+   
+    console.log(data)
+ 
+  return (
+    <div>
+      <SearchBar getSearchTerm={getSearchTerm}/>
+      <form onSubmit={handleSubmit} className="form" ref={formRef}>
+        <label>Date</label>
+        <input type="date" placeholder='Date' name="date"  input={input} onChange={handleChange}/>
+        <label>Description</label>
+        <input type="text" placeholder='Description' name="description" input={input} onChange={handleChange}/>
+        <label>Category</label>
+        <input type="text" placeholder='Category' name="category" input={input} onChange={handleChange}/>
+        <label>Amount</label>
+        <input type="number" placeholder='amount' name="amount" input={input} onChange={handleChange}/>
+        <button type="submit" class="button">Add Transaction</button>
+      </form>
+      <div>
+        <Table transactions={searchedItems} />
+      </div>
+    </div>
+  );
+}
+export default Form;

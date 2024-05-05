@@ -1,13 +1,11 @@
-
 import React from 'react';
 
-function SearchBar({ value, onChange }) {
+function SearchBar({getSearchTerm}) {
   return (
     <input
       type="text"
       placeholder="Search transactions"
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
+      onChange={getSearchTerm}
     />
   );
 }

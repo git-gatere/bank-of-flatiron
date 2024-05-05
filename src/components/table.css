@@ -1,0 +1,12 @@
+.title {
+    padding-right: 1rem;
+}
+
+.my-table {
+    width: 100%;
+}
+
+.table-container {
+    display: flex;
+    justify-content: center;
+}
